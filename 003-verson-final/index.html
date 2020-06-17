@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tree View</title>
+    
+    <link href="http://fonts.googleapis.com/css2?family=Montserrat&display=swap" rel="stylesheet">
+    <link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+
+</head>
+<style>
+* {
+    box-sizing: border-box;
+}
+
+html {
+    font-size: 52.5%;
+}
+
+body {
+    background: #fff;
+    font-family: "Montserrat", Arial;
+    color: #000;
+    font-size: 2rem;
+}
+
+nav#tree {
+    margin-top: 45px;
+    max-width: 500px;
+}
+
+nav#tree ul {
+    padding-left: 16px;
+}
+
+nav#tree li {
+    list-style: none;
+    margin-top: 2px;
+}
+
+nav#tree li.has-children {
+    cursor: pointer;
+    position: relative;
+ 
+}
+
+nav#tree li.has-children:before {
+    content: '\f107';
+    color: #000;
+    position: absolute;
+    font-family: FontAwesome;
+    font-size: 26px;
+    right: 10px;
+  }
+
+li > ul {
+    display: none;
+}
+
+li.open > ul {
+    display: block;
+}     
+</style>    
+<body>
+    <nav id="tree"></nav>
+
+
+    <!-- <script src="components/main.js" type="module"></script> -->
+</body>
+<script>
+    const menu = [
+    { id: 61, name: "Andritz", parent: null},
+    { id: 294, name: "01_Documentos_Tecnicos", parent: 61},
+    { id: 295, name: "0_RD", parent: 294},
+    { id: 5196, name: "Obsoleto", parent: 295},
+    { id: 5022, name: "0_Relacao_de_Documentos", parent: 294},
+    { id: 5201, name: "Obsoleto", parent: 5022},
+    { id: 297, name: "Documentos_Obsoletos", parent: 294},
+    { id: 298, name: "Obsoletos_Andritz", parent: 297},
+    { id: 9440, name: "Ensaios_de_Rendimento", parent: 294},
+    { id: 300, name: "Gerador", parent: 294},
+    { id: 2533, name: "PDF", parent: 300},
+    { id: 307, name: "Qualidade_Inspecao", parent: 294},
+    { id: 6840, name: "DataBooks", parent: 307},
+    { id: 6841, name: "Busca_Databook", parent: 6840},
+    { id: 308, name: "Plano_de_Inspecao_Teste_de_Qualidade_PICQ", parent: 307},
+    { id: 2973, name: "PDF", parent: 308},
+    { id: 5269, name: "Relatorio_Nao_Conformidade", parent: 307},
+    { id: 7266, name: "Relatorio_Nao_Conformidade_Obra", parent: 307},
+    { id: 6659, name: "TIRT_Solicitacao_Emissao", parent: 307},
+    { id: 296, name: "Sistema_de_Excitacao", parent: 294},
+    { id: 2534, name: "PDF", parent: 296},
+    { id: 304, name: "Sistema_de_Rebaixamento", parent: 294},{ id: 2535, name: "PDF", parent: 304},
+    { id: 306, name: "Supervisao_de_Comissionamento", parent: 294},
+    { id: 2536, name: "PDF", parent: 306},
+    { id: 305, name: "Supervisao_de_Montagem", parent: 294},
+    { id: 2537, name: "PDF", parent: 305},
+    { id: 299, name: "Turbina", parent: 294},
+    { id: 2538, name: "PDF", parent: 299},
+    { id: 5184, name: "ZZ_Cancelados", parent: 294},
+    { id: 8806, name: "PDF", parent: 5184},
+    { id: 7397, name: "Z_Alteracao_Projeto", parent: 294},
+    { id: 8872, name: "Z_Protocolo_de_Comissionamento", parent: 294},
+    { id: 310, name: "02_Documentos_e_Comerciais_Gerenciais", parent: 61},
+    { id: 2310, name: "Administrativa", parent: 310},
+    { id: 315, name: "Atas", parent: 2310},
+    { id: 311, name: "Cartas_Correspondencias", parent: 2310},
+    { id: 312, name: "Contratos", parent: 2310},
+    { id: 313, name: "Notas_Fiscais", parent: 2310},
+    { id: 314, name: "Relatorios_em definicao", parent: 2310},
+    { id: 2311, name: "Escopo_e_Integracao_Tecnica", parent: 310},
+    { id: 2312, name: "Financeiro", parent: 310},
+    { id: 6697, name: "Controle_Notas_Fiscais", parent: 2312},
+    { id: 6745, name: "2011", parent: 6697},
+    { id: 6746, name: "2012", parent: 6697},
+    { id: 6698, name: "2013", parent: 6697},
+    { id: 6699, name: "2014", parent: 6697},
+    { id: 6700, name: "2015", parent: 6697},
+    { id: 6701, name: "2016", parent: 6697},
+    { id: 2317, name: "CRE_Certificado_de_Realizacao", parent: 2312},
+    { id: 2445, name: "Teste_Validacao_CRE", parent: 2317},
+    { id: 2318, name: "Documentos_de_Cobranca", parent: 2312},
+    { id: 2366, name: "Gerador", parent: 2318},
+    { id: 2367, name: "Hidromecânicos", parent: 2318},
+    { id: 2368, name: "Hidromecânicos CF", parent: 2318},
+    { id: 2369, name: "Levantamentos CF", parent: 2318},
+    { id: 2370, name: "Sistemas", parent: 2318},
+    { id: 2371, name: "Turbina", parent: 2318},
+    { id: 2435, name: "Vertedouro", parent: 2318},
+    { id: 6740, name: "Lista_Componentes", parent: 2312},
+    { id: 6741, name: "2013", parent: 6740},
+    { id: 6742, name: "2014", parent: 6740},
+    { id: 6743, name: "2015", parent: 6740},
+    { id: 6744, name: "2016", parent: 6740},
+    { id: 2319, name: "Notas_Fiscais", parent: 2312},
+    { id: 2372, name: "Gerador", parent: 2319},
+    { id: 2373, name: "Hidromecânicos", parent: 2319},
+    { id: 2374, name: "Hidromecânicos CF", parent: 2319},
+    { id: 2375, name: "Levantamentos CF", parent: 2319},
+    { id: 2376, name: "Sistemas", parent: 2319},
+    { id: 2377, name: "Turbina", parent: 2319},
+    { id: 2378, name: "Vertedouro", parent: 2319},
+    { id: 2313, name: "Garantia_da_Qualidade", parent: 310},
+    { id: 2314, name: "Gestao_de_Documentos", parent: 310},
+    { id: 2315, name: "Planejamento_e_Cronograma", parent: 310},
+    { id: 2316, name: "Riscos_e_Oportunidades", parent: 310}
+]
+
+function Tree (data) {
+    // pega a tag principal que irá receber o menu
+    const tree = document.querySelector('nav#tree')
+
+    // recebe toda a arvore de elementos
+    const menu = document.createElement('ul')
+
+    const firstLevel = data.filter(item => !item.parent)
+    const getFirstLis = firstLevel.map(buildTree) // retorno novo array com li's
+    getFirstLis.forEach( li => menu.append(li)) // adicionar li's ao menu
+
+
+    function buildTree(item) {
+        
+        // primeiro elemento
+        const li = document.createElement('li')
+        li.innerHTML = item.name
+
+
+        const children = data.filter(child => child.parent === item.id)
+
+        if(children.length > 0) {
+
+            //adiciona um click para os parents
+            li.addEventListener('click', event => {
+                event.stopPropagation()
+                event.target.classList.toggle('open')
+            })
+
+            // adiciona uma classe identificadora de que tem filhos
+            li.classList.add('has-children')
+
+            // constroi os filhos
+            const subMenu = document.createElement('ul')
+            children.map(buildTree)
+            .forEach(li => subMenu.append(li))
+            li.append(subMenu)
+        }
+        
+        // adicionar os elements ao menu
+        return li
+    }
+
+    // adiciona o menu no HTML
+    tree.append(menu)
+}
+
+Tree(menu)
+</script>
+</html>
